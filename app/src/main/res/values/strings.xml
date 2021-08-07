@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Ktor Note App</string>
+    <string name="add_note_fab">add_note</string>
+    <string name="enter_name">Enter Your Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Re-enter Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="login">Login</string>
+    <string name="description">Description</string>
+    <string name="date">Date</string>
+    <string name="title">Title</string>
+    <string name="name">Name</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="logout">Logout</string>
 </resources>
