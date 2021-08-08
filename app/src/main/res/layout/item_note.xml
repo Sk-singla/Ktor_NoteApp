@@ -7,7 +7,6 @@
     app:cardCornerRadius="8dp"
     app:elevation="4dp"
     android:clickable="true"
-    android:background="@drawable/item_note_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusable="true">
 
