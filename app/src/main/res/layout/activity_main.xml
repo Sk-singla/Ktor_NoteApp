@@ -20,8 +20,6 @@
             app:defaultNavHost="true"
             />
 
-
-
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
