@@ -2,6 +2,7 @@ package com.samarth.ktornoteapp.data.local.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 import java.util.*
 
 @Entity
@@ -13,4 +14,4 @@ data class LocalNote(
     var locallyDeleted:Boolean = false,
     @PrimaryKey(autoGenerate = false)
     var noteId:String = UUID.randomUUID().toString()
-)
+): Serializable

@@ -16,14 +16,12 @@ interface NoteApi {
         @Body user:User
     ): SimpleResponse
 
-
-
-
     @Headers("Content-Type: application/json")
     @POST("$API_VERSION/users/login")
     suspend fun login(
         @Body user:User
     ): SimpleResponse
+
 
 
 
