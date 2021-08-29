@@ -18,6 +18,21 @@
         />
 
     <EditText
+        android:id="@+id/nameEditTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/name"
+        android:background="@drawable/edittext_background"
+        android:padding="8dp"
+        android:textSize="18sp"
+        android:layout_margin="16dp"
+        android:inputType="text"
+        android:autofillHints="name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginTF" />
+
+    <EditText
         android:id="@+id/emailEditTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +45,7 @@
         android:autofillHints="emailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginTF" />
+        app:layout_constraintTop_toBottomOf="@id/nameEditTxt" />
 
     <EditText
         android:id="@+id/passwordEdtTxt"
