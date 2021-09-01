@@ -25,31 +25,44 @@ interface NoteApi {
 
 
 
+
     // ======== NOTES ============
+
     @Headers("Content-Type: application/json")
     @POST("$API_VERSION/notes/create")
     suspend fun createNote(
-        @Body note: RemoteNote
-    )
+        @Header("Authorization") token:String,
+        @Body note:RemoteNote
+    ): SimpleResponse
+
+
 
 
     @Headers("Content-Type: application/json")
     @GET("$API_VERSION/notes")
-    suspend fun getAllNotes(): List<RemoteNote>
+    suspend fun getAllNote(
+        @Header("Authorization") token:String
+    ): List<RemoteNote>
+
+
 
 
 
     @Headers("Content-Type: application/json")
     @POST("$API_VERSION/notes/update")
     suspend fun updateNote(
-        @Body note: RemoteNote
-    )
+        @Header("Authorization") token:String,
+        @Body note:RemoteNote
+    ): SimpleResponse
+
 
     @Headers("Content-Type: application/json")
-    @POST("$API_VERSION/notes/delete")
+    @DELETE("$API_VERSION/notes/delete")
     suspend fun deleteNote(
-        @Query("id") noteId: String
-    )
+        @Header("Authorization") token:String,
+        @Query("id") noteId:String
+    ): SimpleResponse
+
 
 
 }
