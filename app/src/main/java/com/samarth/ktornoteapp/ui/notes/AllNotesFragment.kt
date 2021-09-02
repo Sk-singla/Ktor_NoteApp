@@ -52,17 +52,6 @@ class AllNotesFragment:Fragment(R.layout.fragment_all_notes) {
         return super.onOptionsItemSelected(item)
     }
 
-
-
-
-
-
-
-
-
-
-
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

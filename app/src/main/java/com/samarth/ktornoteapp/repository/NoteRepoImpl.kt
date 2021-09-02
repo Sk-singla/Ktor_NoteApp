@@ -1,7 +1,9 @@
 package com.samarth.ktornoteapp.repository
 
 import com.samarth.ktornoteapp.data.local.dao.NoteDao
+import com.samarth.ktornoteapp.data.local.models.LocalNote
 import com.samarth.ktornoteapp.data.remote.NoteApi
+import com.samarth.ktornoteapp.data.remote.models.RemoteNote
 import com.samarth.ktornoteapp.data.remote.models.User
 import com.samarth.ktornoteapp.utils.Result
 import com.samarth.ktornoteapp.utils.SessionManager
@@ -13,6 +15,68 @@ class NoteRepoImpl @Inject constructor(
     val noteDao: NoteDao,
     val sessionManager: SessionManager
 ):NoteRepo {
+
+
+    override suspend fun createNote(note: LocalNote): Result<String> {
+        return try {
+            noteDao.insertNote(note)
+            val token = sessionManager.getJwtToken()
+            if(token == null){
+                Result.Success("Note is Saved in Local Database!")
+            }
+
+            val result = noteApi.createNote(
+                "Bearer $token",
+                RemoteNote(
+                    noteTitle = note.noteTitle,
+                    description = note.desription,
+                    date = note.date,
+                    id = note.noteId
+                )
+            )
+
+            if(result.success){
+                noteDao.insertNote(note.also { it.connected = true })
+                Result.Success("Note Saved Successfully!")
+            } else {
+                Result.Error(result.message)
+            }
+        } catch (e:Exception){
+            e.printStackTrace()
+            Result.Error(e.message ?: "Some Problem Occurred!")
+        }
+
+    }
+
+    override suspend fun updateNote(note: LocalNote): Result<String> {
+        return try {
+            noteDao.insertNote(note)
+            val token = sessionManager.getJwtToken()
+            if(token == null){
+                Result.Success("Note is Updated in Local Database!")
+            }
+
+            val result = noteApi.updateNote(
+                "Bearer $token",
+                RemoteNote(
+                    noteTitle = note.noteTitle,
+                    description = note.desription,
+                    date = note.date,
+                    id = note.noteId
+                )
+            )
+
+            if(result.success){
+                noteDao.insertNote(note.also { it.connected = true })
+                Result.Success("Note Updated Successfully!")
+            } else {
+                Result.Error(result.message)
+            }
+        } catch (e:Exception){
+            e.printStackTrace()
+            Result.Error(e.message ?: "Some Problem Occurred!")
+        }
+    }
 
     override suspend fun createUser(user: User): Result<String> {
 

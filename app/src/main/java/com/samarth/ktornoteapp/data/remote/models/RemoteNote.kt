@@ -4,5 +4,5 @@ data class RemoteNote(
     val noteTitle:String?,
     val description:String?,
     val date:Long,
-    val noteId:String
+    val id:String
 )
