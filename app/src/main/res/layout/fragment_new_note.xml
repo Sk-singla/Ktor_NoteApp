@@ -49,7 +49,6 @@
         android:textColorHint="#9A9A9A"
         android:textSize="25sp"
         android:importantForAutofill="no"
-        android:inputType="text"
         android:background="@drawable/new_note_background"
         app:layout_constraintTop_toBottomOf="@id/date"
         app:layout_constraintStart_toStartOf="parent"

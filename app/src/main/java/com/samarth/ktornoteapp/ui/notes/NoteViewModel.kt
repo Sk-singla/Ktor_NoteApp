@@ -16,7 +16,7 @@ class NoteViewModel @Inject constructor(
     val noteRepo: NoteRepo
 ):ViewModel() {
 
-
+    val notes = noteRepo.getAllNotes()
     var oldNote: LocalNote? = null
 
     fun createNote(

@@ -8,6 +8,7 @@ import com.samarth.ktornoteapp.data.remote.models.User
 import com.samarth.ktornoteapp.utils.Result
 import com.samarth.ktornoteapp.utils.SessionManager
 import com.samarth.ktornoteapp.utils.isNetworkConnected
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class NoteRepoImpl @Inject constructor(
@@ -17,12 +18,39 @@ class NoteRepoImpl @Inject constructor(
 ):NoteRepo {
 
 
+    override fun getAllNotes(): Flow<List<LocalNote>> = noteDao.getAllNotesOrderedByDate()
+
+    override suspend fun getAllNotesFromServer() {
+        try{
+            val token = sessionManager.getJwtToken() ?: return
+            if (!isNetworkConnected(sessionManager.context)) {
+                return
+            }
+            val result = noteApi.getAllNote("Bearer $token")
+            result.forEach { remoteNote ->
+                noteDao.insertNote(
+                    LocalNote(
+                        noteTitle = remoteNote.noteTitle,
+                        desription = remoteNote.description,
+                        date = remoteNote.date,
+                        connected = true,
+                        noteId = remoteNote.id
+                    )
+                )
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
+    }
+
     override suspend fun createNote(note: LocalNote): Result<String> {
-        return try {
+        try {
             noteDao.insertNote(note)
             val token = sessionManager.getJwtToken()
-            if(token == null){
-                Result.Success("Note is Saved in Local Database!")
+                ?: return Result.Success("Note is Saved in Local Database!")
+            if(!isNetworkConnected(sessionManager.context)){
+                return Result.Error("No Internet connection!")
             }
 
             val result = noteApi.createNote(
@@ -35,7 +63,7 @@ class NoteRepoImpl @Inject constructor(
                 )
             )
 
-            if(result.success){
+            return if(result.success){
                 noteDao.insertNote(note.also { it.connected = true })
                 Result.Success("Note Saved Successfully!")
             } else {
@@ -43,17 +71,19 @@ class NoteRepoImpl @Inject constructor(
             }
         } catch (e:Exception){
             e.printStackTrace()
-            Result.Error(e.message ?: "Some Problem Occurred!")
+            return Result.Error(e.message ?: "Some Problem Occurred!")
         }
 
     }
 
     override suspend fun updateNote(note: LocalNote): Result<String> {
-        return try {
+        try {
             noteDao.insertNote(note)
             val token = sessionManager.getJwtToken()
-            if(token == null){
-                Result.Success("Note is Updated in Local Database!")
+                ?: return Result.Success("Note is Updated in Local Database!")
+
+            if(!isNetworkConnected(sessionManager.context)){
+                return Result.Error("No Internet connection!")
             }
 
             val result = noteApi.updateNote(
@@ -66,7 +96,7 @@ class NoteRepoImpl @Inject constructor(
                 )
             )
 
-            if(result.success){
+            return if(result.success){
                 noteDao.insertNote(note.also { it.connected = true })
                 Result.Success("Note Updated Successfully!")
             } else {
@@ -74,7 +104,7 @@ class NoteRepoImpl @Inject constructor(
             }
         } catch (e:Exception){
             e.printStackTrace()
-            Result.Error(e.message ?: "Some Problem Occurred!")
+            return Result.Error(e.message ?: "Some Problem Occurred!")
         }
     }
 
@@ -108,6 +138,7 @@ class NoteRepoImpl @Inject constructor(
             val result = noteApi.login(user)
             if(result.success){
                 sessionManager.updateSession(result.message,user.name ?:"",user.email)
+                getAllNotesFromServer()
                 Result.Success("Logged In Successfully!")
             } else {
                 Result.Error<String>(result.message)

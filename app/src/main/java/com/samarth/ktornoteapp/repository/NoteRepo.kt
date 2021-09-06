@@ -3,6 +3,7 @@ package com.samarth.ktornoteapp.repository
 import com.samarth.ktornoteapp.data.local.models.LocalNote
 import com.samarth.ktornoteapp.data.remote.models.User
 import com.samarth.ktornoteapp.utils.Result
+import kotlinx.coroutines.flow.Flow
 
 interface NoteRepo {
 
@@ -14,4 +15,6 @@ interface NoteRepo {
 
     suspend fun createNote(note:LocalNote): Result<String>
     suspend fun updateNote(note:LocalNote): Result<String>
+    fun getAllNotes():Flow<List<LocalNote>>
+    suspend fun getAllNotesFromServer()
 }
