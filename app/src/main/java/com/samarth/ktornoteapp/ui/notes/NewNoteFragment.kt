@@ -70,7 +70,7 @@ class NewNoteFragment:Fragment(R.layout.fragment_new_note) {
         val description = binding?.newNoteDescriptionEditText?.text?.toString()?.trim()
 
         if(noteTitle.isNullOrEmpty() && description.isNullOrEmpty()) {
-            // todo: delete note
+            noteViewModel.deleteNote(noteViewModel.oldNote!!.noteId)
             return
         }
         noteViewModel.updateNote(noteTitle,description)
