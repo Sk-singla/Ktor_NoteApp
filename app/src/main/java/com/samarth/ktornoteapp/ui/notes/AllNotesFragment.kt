@@ -2,6 +2,7 @@ package com.samarth.ktornoteapp.ui.notes
 
 import android.graphics.Canvas
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -52,7 +53,7 @@ class AllNotesFragment:Fragment(R.layout.fragment_all_notes) {
 
         noteAdapter = NoteAdapter()
         noteAdapter.setOnItemClickListener {
-
+            Log.d("click","click")
             val action = AllNotesFragmentDirections.actionAllNotesFragmentToNewNoteFragment(it)
             findNavController().navigate(action)
         }
