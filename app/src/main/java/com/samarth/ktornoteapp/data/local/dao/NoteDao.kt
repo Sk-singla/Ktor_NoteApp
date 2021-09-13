@@ -31,7 +31,7 @@ interface NoteDao {
 
 
     @Query("SELECT * FROM LocalNote WHERE locallyDeleted = 1")
-    suspend fun getAllLocallyNotes(): List<LocalNote>
+    suspend fun getAllLocallyDeletedNotes(): List<LocalNote>
 
 
 

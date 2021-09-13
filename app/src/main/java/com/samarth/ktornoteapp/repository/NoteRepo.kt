@@ -20,4 +20,5 @@ interface NoteRepo {
 
 
     suspend fun deleteNote(noteId:String)
+    suspend fun syncNotes()
 }
